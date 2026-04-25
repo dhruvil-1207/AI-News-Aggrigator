@@ -5,8 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://admin:password123@localhost:5432/news_db")
-
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://admin:password123@127.0.0.1:5433/news_db")
 # The engine is the core interface to the database
 engine = create_engine(DATABASE_URL, echo=True)
 
