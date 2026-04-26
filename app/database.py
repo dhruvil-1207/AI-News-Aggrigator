@@ -2,11 +2,12 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
+from pathlib import Path
 
-load_dotenv()
+env_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(env_path)
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://admin:password123@127.0.0.1:5433/news_db")
-# The engine is the core interface to the database
+DATABASE_URL = os.getenv("DATABASE_URL")# The engine is the core interface to the database
 engine = create_engine(DATABASE_URL, echo=True)
 
 # The session is what we use to query and add data
