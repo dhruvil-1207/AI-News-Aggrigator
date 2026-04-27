@@ -26,28 +26,41 @@ with st.form("subscribe_form", clear_on_submit=True):
         if not user_email or "@" not in user_email or "." not in user_email:
             st.error("❌ Please enter a valid email address.")
         else:
-            # Compile their choices into a single string
-            chosen_feeds = []
-            # Change these strings to match the actual integer IDs your scraper uses!
-            if feed_fireship: chosen_feeds.append("1")
-            if feed_wired: chosen_feeds.append("2")
-            if feed_verge: chosen_feeds.append("3")
-            if feed_matt: chosen_feeds.append("4")
-            
-            pref_string = ",".join(chosen_feeds)
-
-            db = SessionLocal()
+            # 1. Start a clean UI state
             try:
+                # 2. Database Connection
+                db = SessionLocal()
+                
+                # 3. Logic Check
                 existing_user = db.query(User).filter(User.email == user_email).first()
                 if existing_user:
-                    st.warning("⚠️ You are already subscribed to the list!")
+                    st.warning("👋 You're already on the list! We'll keep you updated.")
                 else:
-                    # Save the user WITH their custom preferences!
+                    # Compile choices
+                    chosen_feeds = []
+                    if feed_fireship: chosen_feeds.append("1")
+                    if feed_wired: chosen_feeds.append("2")
+                    if feed_verge: chosen_feeds.append("3")
+                    if feed_matt: chosen_feeds.append("4")
+                    
+                    pref_string = ",".join(chosen_feeds)
+                    
                     new_user = User(email=user_email, preferences=pref_string)
                     db.add(new_user)
                     db.commit()
-                    st.success("🎉 Success! Your custom feed has been activated.")
+                    
+                    # 4. Success Message
+                    st.success("🎉 You're in! Check your inbox for the next update.")
+                    st.balloons() # Optional: A little celebration!
+
             except Exception as e:
-                st.error(f"Something went wrong: {e}")
+                # 5. THE SILENT GUARD:
+                # We log the real error to the console (for you to see in logs)
+                print(f"DEBUG ERROR: {e}") 
+                
+                # But we show the user a polite, generic message
+                st.error("🔌 Connectivity hiccup! Please try again in a moment.")
+                
             finally:
-                db.close()
+                if 'db' in locals():
+                    db.close()
