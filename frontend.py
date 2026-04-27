@@ -26,12 +26,9 @@ with st.form("subscribe_form", clear_on_submit=True):
         if not user_email or "@" not in user_email or "." not in user_email:
             st.error("❌ Please enter a valid email address.")
         else:
-            # 1. Start a clean UI state
             try:
-                # 2. Database Connection
                 db = SessionLocal()
                 
-                # 3. Logic Check
                 existing_user = db.query(User).filter(User.email == user_email).first()
                 if existing_user:
                     st.warning("👋 You're already on the list! We'll keep you updated.")
@@ -49,16 +46,12 @@ with st.form("subscribe_form", clear_on_submit=True):
                     db.add(new_user)
                     db.commit()
                     
-                    # 4. Success Message
                     st.success("🎉 You're in! Check your inbox for the next update.")
-                    st.balloons() # Optional: A little celebration!
+                    st.balloons() 
 
             except Exception as e:
-                # 5. THE SILENT GUARD:
-                # We log the real error to the console (for you to see in logs)
                 print(f"DEBUG ERROR: {e}") 
                 
-                # But we show the user a polite, generic message
                 st.error("🔌 Connectivity hiccup! Please try again in a moment.")
                 
             finally:
