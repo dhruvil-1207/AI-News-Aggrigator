@@ -49,7 +49,7 @@ def generate_newsletter_html(articles):
 
 def send_newsletter():
     db = SessionLocal()
-    print("\n📬 [11:32 AM Trigger] Preparing today's newsletter...")
+    print("\n📬 [07:00 AM Trigger] Preparing today's newsletter...")
 
     # 1. Fetch Today's Summarized Articles
     cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
@@ -80,9 +80,26 @@ def send_newsletter():
         server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
         server.login(SENDER_EMAIL, SENDER_PASSWORD)
 
-        # 4. Loop through users and send individual emails
+        # 4. Loop through users and send customized emails
         for user in users:
             print(f"  -> Sending to {user.email}...")
+            
+            # Convert their saved string (e.g., "Fireship,Wired") into a Python list
+            user_prefs = user.preferences.split(",") if user.preferences else []
+            
+            # Filter today's articles to ONLY include the ones this user wants
+            custom_articles = [
+                article for article in todays_articles 
+                if str(article.source_id) in user_prefs
+            ]
+            
+            # If they didn't select any feeds that had news today, skip them!
+            if not custom_articles:
+                print(f"Skipping {user.email} - no news matching their preferences today.")
+                continue
+
+            # Generate HTML with only THEIR chosen articles
+            html_body = generate_newsletter_html(custom_articles)
             
             msg = MIMEMultipart("alternative")
             msg["Subject"] = f"AI Tech News - {datetime.now().strftime('%b %d')}"
@@ -103,10 +120,10 @@ def send_newsletter():
 
 # --- THE AUTOMATION ENGINE ---
 if __name__ == "__main__":
-    print("🕒 Mailer Engine Started. Standing by for 11:32 AM dispatch...")
+    print("🕒 Mailer Engine Started. Standing by for 07:00 AM dispatch...")
     
     # Set the trigger time (24-hour format)
-    schedule.every().day.at("12:06").do(send_newsletter)
+    schedule.every().day.at("07:00").do(send_newsletter)
     
     # This loop keeps the script running forever, checking the time every second
     while True:
