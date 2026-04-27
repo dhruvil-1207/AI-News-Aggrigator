@@ -118,17 +118,6 @@ def send_newsletter():
     finally:
         db.close()
 
-# --- THE AUTOMATION ENGINE ---
-if __name__ == "__main__":
-    print("🕒 Mailer Engine Started. Standing by for 07:00 AM dispatch...")
-    
-    # Set the trigger time (24-hour format)
-    schedule.every().day.at("07:00").do(send_newsletter)
-    
-    # This loop keeps the script running forever, checking the time every second
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(1)
 
 # --- THE AUTOMATION ENGINE ---
 if __name__ == "__main__":
