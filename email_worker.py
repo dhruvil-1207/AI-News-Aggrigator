@@ -126,6 +126,10 @@ if __name__ == "__main__":
     schedule.every().day.at("07:00").do(send_newsletter)
     
     # This loop keeps the script running forever, checking the time every second
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)
+
+# --- THE AUTOMATION ENGINE ---
+if __name__ == "__main__":
+    send_newsletter()
