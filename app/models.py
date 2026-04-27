@@ -1,7 +1,7 @@
 # app/models.py
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 from .database import Base
 
 class User(Base):
@@ -9,7 +9,8 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    preferences = Column(String, default="Fireship,Wired,The Verge,Matt Wolfe") 
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     subscriptions = relationship("UserSubscription", back_populates="user")
 
 class Source(Base):
