@@ -1,0 +1,32 @@
+name: Daily AI Newsletter Dispatch
+
+on:
+  schedule:
+    # This runs at 06:00 UTC (11:30 AM IST) every single day
+    - cron: '0 6 * * *'
+  workflow_dispatch: # This adds a "Play" button so we can test it manually!
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Execute AI Summarizer & Mailer
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+        run: |
+          python ai_worker.py
+          python email_worker.py
