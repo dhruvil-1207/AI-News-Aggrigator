@@ -1,7 +1,6 @@
 import os
 import smtplib
 import time
-import schedule
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timedelta, timezone
