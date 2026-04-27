@@ -8,8 +8,10 @@ env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(env_path)
 
 DATABASE_URL = os.getenv("DATABASE_URL")# The engine is the core interface to the database
-engine = create_engine(DATABASE_URL, echo=True)
-
+engine = create_engine(
+    DATABASE_URL, 
+    pool_pre_ping=True  
+)
 # The session is what we use to query and add data
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
