@@ -29,6 +29,6 @@ jobs:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
         run: |
-          python scraper.py
-          python ai_summarizer.py
-          python mail_worker.py
+          python app/scraper.py
+          python app/ai_summarizer.py
+          python app/mail_worker.py
