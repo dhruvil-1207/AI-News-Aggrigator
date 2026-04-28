@@ -2,19 +2,15 @@ name: Daily AI Newsletter Dispatch
 
 on:
   schedule:
-    # This runs at 01:30 UTC (07:00 AM IST) every single day
     - cron: '27 4 * * *'
-  workflow_dispatch: # This adds a "Play" button so we can test it manually!
+  workflow_dispatch:
 
 jobs:
   run-pipeline:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/checkout@v3
         with:
           python-version: '3.11'
 
