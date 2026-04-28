@@ -2,7 +2,7 @@ name: Daily AI Newsletter Dispatch
 
 on:
   schedule:
-    - cron: '42 4 * * *'
+    - cron: '45 4 * * *'
   workflow_dispatch:
 
 jobs:
@@ -28,8 +28,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-          PYTHONPATH: .  # This tells Python to look in the root for imports
         run: |
-          python app/scraper.py
-          python app/ai_summarizer.py
-          python app/mail_worker.py
+          python scraper.py
+          python ai_summarizer.py
+          python mail_worker.py
