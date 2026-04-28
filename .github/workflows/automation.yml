@@ -2,7 +2,7 @@ name: Daily AI Newsletter Dispatch
 
 on:
   schedule:
-    - cron: '35 4 * * *'
+    - cron: '42 4 * * *'
   workflow_dispatch:
 
 jobs:
