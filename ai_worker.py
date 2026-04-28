@@ -1,4 +1,3 @@
-# ai_worker.py
 import os
 import time
 from google import genai
