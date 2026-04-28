@@ -2,7 +2,7 @@ name: Daily AI Newsletter Dispatch
 
 on:
   schedule:
-    - cron: '45 4 * * *'
+    - cron: '53 4 * * *'
   workflow_dispatch:
 
 jobs:
@@ -29,6 +29,6 @@ jobs:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
         run: |
-          python app/scraper.py
-          python app/ai_summarizer.py
-          python app/mail_worker.py
+          python -m app.scraper
+          python -m app.ai_summarizer
+          python -m app.mail_worker
