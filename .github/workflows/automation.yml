@@ -2,7 +2,7 @@ name: Daily AI Newsletter Dispatch
 
 on:
   schedule:
-    - cron: '58 4 * * *'
+    - cron: '26 5 * * *'
   workflow_dispatch:
 
 jobs:
@@ -31,4 +31,4 @@ jobs:
         run: |
           python -m app.scraper
           python -m ai_worker
-          python -m mail_worker
+          python -m email_worker
